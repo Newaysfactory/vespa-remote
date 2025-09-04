@@ -2,4 +2,4 @@ Top cover:
 Milled: Polycarbonate (PC) (transparent) Maximum service temperature	144 °C
 
 Bottom:
-3D printed: Nylon HP-PA-12 (MJF) - 175°
+3D printed: ABS
