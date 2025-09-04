@@ -1,0 +1,722 @@
+
+
+Microchip MPLAB XC8 Assembler V3.00 build 20241204225717 
+                                                                                               Mon May 19 09:59:32 2025
+
+Microchip MPLAB XC8 C Compiler v3.00 (Free license) build 20241204225717 Og1 
+     1                           	processor	10F222
+     2                           	pagewidth 120
+     3                           	opt	flic
+     4                           	psect	cinit,global,class=ENTRY,space=0,merge=1,delta=2
+     5                           	psect	bssBANK0,global,class=BANK0,space=1,delta=1,noexec
+     6                           	psect	cstackCOMMON,global,class=COMMON,space=1,delta=1,noexec
+     7                           	psect	cstackBANK0,global,class=BANK0,space=1,delta=1,noexec
+     8                           	psect	maintext,global,class=CODE,space=0,split=1,delta=2
+     9                           	psect	text1,local,class=CODE,space=0,merge=1,delta=2
+    10                           	psect	jmp_tab,global,class=ENTRY,space=0,delta=2
+    11                           	psect	text2,local,class=CODE,space=0,merge=1,delta=2
+    12                           	psect	config,global,abs,ovrld,class=CONFIG,space=4,delta=2,noexec
+    13                           	dabs	1,0x1C,4
+    14      000                     
+    15                           ; Generated 17/08/2023 GMT
+    16                           ; 
+    17                           ; Copyright © 2023, Microchip Technology Inc. and its subsidiaries ("Microchip")
+    18                           ; All rights reserved.
+    19                           ; 
+    20                           ; This software is developed by Microchip Technology Inc. and its subsidiaries ("Microch
+      +                          ip").
+    21                           ; 
+    22                           ; Redistribution and use in source and binary forms, with or without modification, are
+    23                           ; permitted provided that the following conditions are met:
+    24                           ; 
+    25                           ;     1. Redistributions of source code must retain the above copyright notice, this lis
+      +                          t of
+    26                           ;        conditions and the following disclaimer.
+    27                           ; 
+    28                           ;     2. Redistributions in binary form must reproduce the above copyright notice, this 
+      +                          list
+    29                           ;        of conditions and the following disclaimer in the documentation and/or other
+    30                           ;        materials provided with the distribution. Publication is not required when
+    31                           ;        this file is used in an embedded application.
+    32                           ; 
+    33                           ;     3. Microchip's name may not be used to endorse or promote products derived from th
+      +                          is
+    34                           ;        software without specific prior written permission.
+    35                           ; 
+    36                           ; THIS SOFTWARE IS PROVIDED BY MICROCHIP "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+    37                           ; INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS F
+      +                          OR
+    38                           ; PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL MICROCHIP BE LIABLE FOR ANY DIRECT, INDIREC
+      +                          T,
+    39                           ; INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING BUT NOT LIMITED TO
+    40                           ; PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA OR PROFITS; OR BUSINESS
+    41                           ; INTERRUPTION) HOWSOEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, ST
+      +                          RICT
+    42                           ; LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE U
+      +                          SE OF
+    43                           ; THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+    44                           ; 
+    45                           ; 
+    46                           ; Code-generator required, PIC10F222 Definitions
+    47                           ; 
+    48                           ; SFR Addresses
+    49      004                     fsr             equ	4
+    50      004                     fsr0            equ	4
+    51      000                     indf            equ	0
+    52      000                     indf0           equ	0
+    53      002                     pc              equ	2
+    54      002                     pcl             equ	2
+    55      003                     status          equ	3
+    56      000                     INDF            equ	0	;# 
+    57      001                     TMR0            equ	1	;# 
+    58      002                     PCL             equ	2	;# 
+    59      003                     STATUS          equ	3	;# 
+    60      004                     FSR             equ	4	;# 
+    61      005                     OSCCAL          equ	5	;# 
+    62      006                     GPIO            equ	6	;# 
+    63      007                     ADCON0          equ	7	;# 
+    64      008                     ADRES           equ	8	;# 
+    65      006                     _GPIO           set	6
+    66      006                     _TRISGPIO       set	6
+    67      000                     _OPTION         set	0
+    68      005                     _OSCCALbits     set	5
+    69      007                     _ADCON0bits     set	7
+    70      032                     _GP2            set	50
+    71      031                     _GP1            set	49
+    72      030                     _GP0            set	48
+    73      033                     _GP3            set	51
+    74                           
+    75                           	psect	cinit
+    76      001                     start_initialization:	
+    77                           ; #config settings
+    78                           
+    79      001                     __initialization:
+    80                           
+    81                           ; Clear objects allocated to BANK0
+    82      001  0064               	clrf	4	;select bank0
+    83      002  0074               	clrf	__pbssBANK0& (0+31)
+    84      003  0075               	clrf	(__pbssBANK0+1)& (0+31)
+    85      004                     end_of_initialization:	
+    86                           ;End of C runtime variable initialization code
+    87                           
+    88      004                     __end_of__initialization:
+    89      004  0064               	clrf	4
+    90      005  0B7F               	ljmp	_main	;jump to C main() function
+    91                           
+    92                           	psect	bssBANK0
+    93      014                     __pbssBANK0:
+    94      014                     debouncePin@candidate_state:
+    95      014                     	ds	1
+    96      015                     debouncePin@debounced_state:
+    97      015                     	ds	1
+    98                           
+    99                           	psect	cstackCOMMON
+   100      000                     __pcstackCOMMON:
+   101      000                     ??_init:
+   102                           
+   103                           	psect	cstackBANK0
+   104      009                     __pcstackBANK0:	
+   105                           ; 1 bytes @ 0x0
+   106                           
+   107      009                     ?_init:
+   108      009                     ?_debouncePin:	
+   109                           ; 1 bytes @ 0x0
+   110                           
+   111      009                     ?_main:	
+   112                           ; 1 bytes @ 0x0
+   113                           
+   114                           
+   115                           ; 1 bytes @ 0x0
+   116      009                     	ds	1
+   117      00A                     ??_debouncePin:
+   118                           
+   119                           ; 1 bytes @ 0x1
+   120      00A                     	ds	1
+   121      00B                     debouncePin@raw_state:
+   122                           
+   123                           ; 1 bytes @ 0x2
+   124      00B                     	ds	1
+   125      00C                     ??_main:
+   126                           
+   127                           ; 1 bytes @ 0x3
+   128      00C                     	ds	3
+   129      00F                     main@prev_state:
+   130                           
+   131                           ; 1 bytes @ 0x6
+   132      00F                     	ds	1
+   133      010                     main@cycle:
+   134                           
+   135                           ; 2 bytes @ 0x7
+   136      010                     	ds	2
+   137      012                     main@state:
+   138                           
+   139                           ; 1 bytes @ 0x9
+   140      012                     	ds	1
+   141      013                     main@rising_edges_cnt:
+   142                           
+   143                           ; 1 bytes @ 0xA
+   144      013                     	ds	1
+   145                           
+   146                           	psect	maintext
+   147      17F                     __pmaintext:	
+   148 ;;
+   149 ;;Main: autosize = 0, tempsize = 3, incstack = 0, save=0
+   150 ;;
+   151 ;; *************** function _main *****************
+   152 ;; Defined at:
+   153 ;;		line 72 in file "main.c"
+   154 ;; Parameters:    Size  Location     Type
+   155 ;;		None
+   156 ;; Auto vars:     Size  Location     Type
+   157 ;;  cycle           2    7[BANK0 ] unsigned int 
+   158 ;;  rising_edges    1   10[BANK0 ] unsigned char 
+   159 ;;  state           1    9[BANK0 ] unsigned char 
+   160 ;;  prev_state      1    6[BANK0 ] unsigned char 
+   161 ;; Return value:  Size  Location     Type
+   162 ;;                  1   37[None  ] void 
+   163 ;; Registers used:
+   164 ;;		wreg, fsr0l, fsr0h, status,2, status,0, btemp+0, btemp+1, btemp+3, pclath, cstack
+   165 ;; Tracked objects:
+   166 ;;		On entry : B00/0
+   167 ;;		On exit  : 0/0
+   168 ;;		Unchanged: 0/0
+   169 ;; Data sizes:     COMMON   BANK0
+   170 ;;      Params:         0       0
+   171 ;;      Locals:         0       5
+   172 ;;      Temps:          0       3
+   173 ;;      Totals:         0       8
+   174 ;;Total ram usage:        8 bytes
+   175 ;; Hardware stack levels required when called: 1
+   176 ;; This function calls:
+   177 ;;		_debouncePin
+   178 ;;		_init
+   179 ;; This function is called by:
+   180 ;;		Startup code after reset
+   181 ;; This function uses a non-reentrant model
+   182 ;;
+   183                           
+   184      17F                     _main:	
+   185                           ;psect for function _main
+   186                           
+   187      17F                     l615:	
+   188                           ;incstack = 0
+   189                           ; Regs used in _main: [wreg-fsr0h+status,2-btemp+1+btemp+3+pclath+cstack]
+   190                           
+   191                           
+   192                           ;main.c: 73:     unsigned char rising_edges_cnt = 0;
+   193      17F  0073               	clrf	main@rising_edges_cnt
+   194                           
+   195                           ;main.c: 74:     unsigned int cycle = 0;
+   196      180  0070               	clrf	main@cycle
+   197      181  0071               	clrf	main@cycle+1
+   198                           
+   199                           ;main.c: 75:     unsigned char prev_state = 0;
+   200      182  006F               	clrf	main@prev_state
+   201      183                     l617:
+   202                           
+   203                           ;main.c: 78:     init();
+   204      183  0906               	fcall	entry__init
+   205      184                     l619:
+   206                           
+   207                           ;main.c: 82:         state = debouncePin(GP3);
+   208      184  0C00               	movlw	0
+   209      185  0666               	btfsc	6,3	;volatile
+   210      186  0C01               	movlw	1
+   211      187  0907               	fcall	entry__debouncePin
+   212      188  0209               	movf	?_debouncePin,w
+   213      189  0032               	movwf	main@state
+   214      18A                     l621:
+   215                           
+   216                           ;main.c: 85:         if (prev_state == 0 && state == 1) {
+   217      18A  020F               	movf	main@prev_state,w
+   218      18B  0743               	btfss	3,2
+   219      18C  0B8E               	goto	u141
+   220      18D  0B8F               	goto	u140
+   221      18E                     u141:
+   222      18E  0B9D               	goto	l631
+   223      18F                     u140:
+   224      18F                     l623:
+   225      18F  00D2               	decf	main@state,w
+   226      190  0743               	btfss	3,2
+   227      191  0B93               	goto	u151
+   228      192  0B94               	goto	u150
+   229      193                     u151:
+   230      193  0B9D               	goto	l631
+   231      194                     u150:
+   232      194                     l625:
+   233                           
+   234                           ;main.c: 86:             if (rising_edges_cnt < 255) {
+   235      194  0293               	incf	main@rising_edges_cnt,w
+   236      195  0643               	btfsc	3,2
+   237      196  0B98               	goto	u161
+   238      197  0B99               	goto	u160
+   239      198                     u161:
+   240      198  0B9B               	goto	l629
+   241      199                     u160:
+   242      199                     l627:
+   243                           
+   244                           ;main.c: 87:                 rising_edges_cnt++;
+   245      199  0C01               	movlw	1
+   246      19A  01F3               	addwf	main@rising_edges_cnt,f
+   247      19B                     l629:
+   248                           
+   249                           ;main.c: 89:                 cycle = 0;
+   250      19B  0070               	clrf	main@cycle
+   251      19C  0071               	clrf	main@cycle+1
+   252      19D                     l631:
+   253                           
+   254                           ;main.c: 93:         if (rising_edges_cnt){
+   255      19D  0213               	movf	main@rising_edges_cnt,w
+   256      19E  0643               	btfsc	3,2
+   257      19F  0BA1               	goto	u171
+   258      1A0  0BA2               	goto	u170
+   259      1A1                     u171:
+   260      1A1  0BAB               	goto	l635
+   261      1A2                     u170:
+   262      1A2                     l633:
+   263                           
+   264                           ;main.c: 94:             cycle++;
+   265      1A2  0C01               	movlw	1
+   266      1A3  003C               	movwf	btemp
+   267      1A4  007D               	clrf	btemp+1
+   268      1A5  021C               	movf	wtemp0,w
+   269      1A6  01F0               	addwf	main@cycle,f
+   270      1A7  0603               	skipnc
+   271      1A8  02B1               	incf	main@cycle+1,f
+   272      1A9  021D               	movf	wtemp0+1,w
+   273      1AA  01F1               	addwf	main@cycle+1,f
+   274      1AB                     l635:
+   275                           
+   276                           ;main.c: 98:         if (cycle >= 1000/2){
+   277      1AB  0C01               	movlw	1
+   278      1AC  0091               	subwf	main@cycle+1,w
+   279      1AD  0CF4               	movlw	244
+   280      1AE  0643               	skipnz
+   281      1AF  0090               	subwf	main@cycle,w
+   282      1B0  0703               	skipc
+   283      1B1  0BB3               	goto	u181
+   284      1B2  0BB4               	goto	u180
+   285      1B3                     u181:
+   286      1B3  0BEF               	goto	l661
+   287      1B4                     u180:
+   288      1B4                     l637:
+   289                           
+   290                           ;main.c: 99:             if (rising_edges_cnt == 1){
+   291      1B4  00D3               	decf	main@rising_edges_cnt,w
+   292      1B5  0743               	btfss	3,2
+   293      1B6  0BB8               	goto	u191
+   294      1B7  0BB9               	goto	u190
+   295      1B8                     u191:
+   296      1B8  0BBB               	goto	l641
+   297      1B9                     u190:
+   298      1B9  0BEC               	goto	l659
+   299      1BA                     l639:
+   300                           
+   301                           ;main.c: 101:             } else if (rising_edges_cnt == 2){
+   302      1BA  0BEC               	goto	l659
+   303      1BB                     l641:
+   304      1BB  0C02               	movlw	2
+   305      1BC  0193               	xorwf	main@rising_edges_cnt,w
+   306      1BD  0743               	btfss	3,2
+   307      1BE  0BC0               	goto	u201
+   308      1BF  0BC1               	goto	u200
+   309      1C0                     u201:
+   310      1C0  0BD0               	goto	l647
+   311      1C1                     u200:
+   312      1C1                     l643:
+   313                           
+   314                           ;main.c: 102:                 GP0 = 1;
+   315      1C1  0506               	bsf	6,0	;volatile
+   316      1C2                     l645:
+   317                           
+   318                           ;main.c: 103:                 _delay((unsigned long)((1000)*(4000000/4000.0)));
+   319      1C2  0C06               	movlw	6
+   320      1C3  002E               	movwf	??_main+2
+   321      1C4  0C13               	movlw	19
+   322      1C5  002D               	movwf	??_main+1
+   323      1C6  0CAD               	movlw	173
+   324      1C7  002C               	movwf	??_main
+   325      1C8                     u237:
+   326      1C8  02EC               	decfsz	??_main,f
+   327      1C9  0BC8               	goto	u237
+   328      1CA  02ED               	decfsz	??_main+1,f
+   329      1CB  0BC8               	goto	u237
+   330      1CC  02EE               	decfsz	??_main+2,f
+   331      1CD  0BC8               	goto	u237
+   332      1CE  0BCF               	nop2
+   333                           
+   334                           ;main.c: 104:             } else if (rising_edges_cnt == 3){
+   335      1CF  0BEC               	goto	l659
+   336      1D0                     l647:
+   337      1D0  0C03               	movlw	3
+   338      1D1  0193               	xorwf	main@rising_edges_cnt,w
+   339      1D2  0743               	btfss	3,2
+   340      1D3  0BD5               	goto	u211
+   341      1D4  0BD6               	goto	u210
+   342      1D5                     u211:
+   343      1D5  0BD8               	goto	l653
+   344      1D6                     u210:
+   345      1D6                     l649:
+   346                           
+   347                           ;main.c: 105:                 GP1 = 1;
+   348      1D6  0526               	bsf	6,1	;volatile
+   349      1D7  0BC2               	goto	l645
+   350      1D8                     l653:
+   351      1D8  0C04               	movlw	4
+   352      1D9  0193               	xorwf	main@rising_edges_cnt,w
+   353      1DA  0743               	btfss	3,2
+   354      1DB  0BDD               	goto	u221
+   355      1DC  0BDE               	goto	u220
+   356      1DD                     u221:
+   357      1DD  0BBA               	goto	l639
+   358      1DE                     u220:
+   359      1DE                     l655:
+   360                           
+   361                           ;main.c: 108:                 GP2 = 1;
+   362      1DE  0546               	bsf	6,2	;volatile
+   363      1DF                     l657:
+   364                           
+   365                           ;main.c: 109:                 _delay((unsigned long)((500)*(4000000/4000.0)));
+   366      1DF  0C03               	movlw	3
+   367      1E0  002E               	movwf	??_main+2
+   368      1E1  0C8A               	movlw	138
+   369      1E2  002D               	movwf	??_main+1
+   370      1E3  0C55               	movlw	85
+   371      1E4  002C               	movwf	??_main
+   372      1E5                     u247:
+   373      1E5  02EC               	decfsz	??_main,f
+   374      1E6  0BE5               	goto	u247
+   375      1E7  02ED               	decfsz	??_main+1,f
+   376      1E8  0BE5               	goto	u247
+   377      1E9  02EE               	decfsz	??_main+2,f
+   378      1EA  0BE5               	goto	u247
+   379      1EB  0BEC               	nop2
+   380      1EC                     l659:	
+   381                           ;main.c: 110:             }else {
+   382                           
+   383                           
+   384                           ;main.c: 114:             cycle = 0;
+   385      1EC  0070               	clrf	main@cycle
+   386      1ED  0071               	clrf	main@cycle+1
+   387                           
+   388                           ;main.c: 115:             rising_edges_cnt = 0;
+   389      1EE  0073               	clrf	main@rising_edges_cnt
+   390      1EF                     l661:
+   391                           
+   392                           ;main.c: 119:         prev_state = state;
+   393      1EF  0212               	movf	main@state,w
+   394      1F0  002F               	movwf	main@prev_state
+   395      1F1                     l663:
+   396                           
+   397                           ;main.c: 121:         GP0 = 0;
+   398      1F1  0406               	bcf	6,0	;volatile
+   399      1F2                     l665:
+   400                           
+   401                           ;main.c: 122:         GP1 = 0;
+   402      1F2  0426               	bcf	6,1	;volatile
+   403      1F3                     l667:
+   404                           
+   405                           ;main.c: 123:         GP2 = 0;
+   406      1F3  0446               	bcf	6,2	;volatile
+   407      1F4                     l669:
+   408                           
+   409                           ;main.c: 125:         _delay((unsigned long)((2)*(4000000/4000.0)));
+   410      1F4  0C03               	movlw	3
+   411      1F5  002D               	movwf	??_main+1
+   412      1F6  0C97               	movlw	151
+   413      1F7  002C               	movwf	??_main
+   414      1F8                     u257:
+   415      1F8  02EC               	decfsz	??_main,f
+   416      1F9  0BF8               	goto	u257
+   417      1FA  02ED               	decfsz	??_main+1,f
+   418      1FB  0BF8               	goto	u257
+   419      1FC  0BFD               	nop2
+   420      1FD  0B84               	goto	l619
+   421      1FE  0A00               	ljmp	start
+   422      1FF                     __end_of_main:
+   423                           
+   424                           	psect	text1
+   425      15D                     __ptext1:	
+   426 ;; *************** function _init *****************
+   427 ;; Defined at:
+   428 ;;		line 35 in file "main.c"
+   429 ;; Parameters:    Size  Location     Type
+   430 ;;		None
+   431 ;; Auto vars:     Size  Location     Type
+   432 ;;		None
+   433 ;; Return value:  Size  Location     Type
+   434 ;;                  1   22[None  ] void 
+   435 ;; Registers used:
+   436 ;;		wreg, fsr0l, fsr0h, status,2
+   437 ;; Tracked objects:
+   438 ;;		On entry : 0/0
+   439 ;;		On exit  : 0/0
+   440 ;;		Unchanged: 0/0
+   441 ;; Data sizes:     COMMON   BANK0
+   442 ;;      Params:         0       0
+   443 ;;      Locals:         0       0
+   444 ;;      Temps:          0       0
+   445 ;;      Totals:         0       0
+   446 ;;Total ram usage:        0 bytes
+   447 ;; Hardware stack levels used: 1
+   448 ;; This function calls:
+   449 ;;		Nothing
+   450 ;; This function is called by:
+   451 ;;		_main
+   452 ;; This function uses a non-reentrant model
+   453 ;;
+   454                           
+   455      15D                     _init:	
+   456                           ;psect for function _init
+   457                           
+   458      15D                     l593:
+   459                           
+   460                           ;main.c: 37:     ADCON0bits.ANS0 = 0;
+   461      15D  04C7               	bcf	7,6	;volatile
+   462                           
+   463                           ;main.c: 38:     ADCON0bits.ANS1 = 0;
+   464      15E  04E7               	bcf	7,7	;volatile
+   465                           
+   466                           ;main.c: 39:     OSCCALbits.FOSC4 = 0;
+   467      15F  0405               	bcf	5,0	;volatile
+   468      160                     l595:
+   469                           
+   470                           ;main.c: 44:     OPTION = 0b01011111;
+   471      160  0C5F               	movlw	95
+   472      161  0002               	option
+   473      162                     l597:
+   474                           
+   475                           ;main.c: 47:     TRISGPIO = 0b11111000;
+   476      162  0CF8               	movlw	248
+   477      163  0006               	tris	6
+   478      164                     l599:
+   479                           
+   480                           ;main.c: 48:     GPIO = 0b00000000;
+   481      164  0066               	clrf	6	;volatile
+   482      165                     l23:
+   483      165  0800               	retlw	0
+   484      166                     __end_of_init:
+   485                           
+   486                           	psect	jmp_tab
+   487      006                     __pjmp_tab:	
+   488                           ;incstack = 0
+   489                           ; Regs used in _init: [wreg-fsr0h+status,2]
+   490                           
+   491      006                     entry__init:
+   492      006  0B5D               	ljmp	_init
+   493      007                     entry__debouncePin:	
+   494                           ;incstack = 0
+   495                           ; Regs used in _debouncePin: [wreg-fsr0h+status,2+status,0+btemp+3]
+   496                           
+   497      007  0B66               	ljmp	_debouncePin
+   498                           
+   499                           	psect	text2
+   500      166                     __ptext2:	
+   501 ;; *************** function _debouncePin *****************
+   502 ;; Defined at:
+   503 ;;		line 51 in file "main.c"
+   504 ;; Parameters:    Size  Location     Type
+   505 ;;  raw_state       1    wreg     unsigned char 
+   506 ;; Auto vars:     Size  Location     Type
+   507 ;;  raw_state       1    2[BANK0 ] unsigned char 
+   508 ;; Return value:  Size  Location     Type
+   509 ;;                  1    0[BANK0 ] unsigned char 
+   510 ;; Registers used:
+   511 ;;		wreg, fsr0l, fsr0h, status,2, status,0, btemp+3
+   512 ;; Tracked objects:
+   513 ;;		On entry : 0/0
+   514 ;;		On exit  : 0/0
+   515 ;;		Unchanged: 0/0
+   516 ;; Data sizes:     COMMON   BANK0
+   517 ;;      Params:         0       1
+   518 ;;      Locals:         0       1
+   519 ;;      Temps:          0       1
+   520 ;;      Totals:         0       3
+   521 ;;Total ram usage:        3 bytes
+   522 ;; Hardware stack levels used: 1
+   523 ;; This function calls:
+   524 ;;		Nothing
+   525 ;; This function is called by:
+   526 ;;		_main
+   527 ;; This function uses a non-reentrant model
+   528 ;;
+   529                           
+   530      166                     _debouncePin:	
+   531                           ;psect for function _debouncePin
+   532                           
+   533                           
+   534                           ;debouncePin@raw_state stored from wreg
+   535      166  002B               	movwf	debouncePin@raw_state
+   536      167                     l601:
+   537                           
+   538                           ;main.c: 54:     static unsigned char debounced_state = 0;;main.c: 55:     static unsign
+      +                          ed char candidate_state = 0;;main.c: 60:     candidate_state = (unsigned char)((candidat
+      +                          e_state << 1) | raw_state);
+   539      167  020B               	movf	debouncePin@raw_state,w
+   540      168  003F               	movwf	btemp+3
+   541      169  0214               	movf	debouncePin@candidate_state,w
+   542      16A  002A               	movwf	??_debouncePin
+   543      16B  01CA               	addwf	??_debouncePin,w
+   544      16C  011F               	iorwf	btemp+3,w
+   545      16D  0034               	movwf	debouncePin@candidate_state
+   546      16E                     l603:
+   547                           
+   548                           ;main.c: 62:     if (candidate_state == 0xff){
+   549      16E  0294               	incf	debouncePin@candidate_state,w
+   550      16F  0743               	btfss	3,2
+   551      170  0B72               	goto	u121
+   552      171  0B73               	goto	u120
+   553      172                     u121:
+   554      172  0B76               	goto	l607
+   555      173                     u120:
+   556      173                     l605:
+   557                           
+   558                           ;main.c: 63:         debounced_state = 1;
+   559      173  0C01               	movlw	1
+   560      174  0035               	movwf	debouncePin@debounced_state
+   561                           
+   562                           ;main.c: 64:     }
+   563      175  0B7C               	goto	l611
+   564      176                     l607:
+   565      176  0214               	movf	debouncePin@candidate_state,w
+   566      177  0743               	btfss	3,2
+   567      178  0B7A               	goto	u131
+   568      179  0B7B               	goto	u130
+   569      17A                     u131:
+   570      17A  0B7C               	goto	l611
+   571      17B                     u130:
+   572      17B                     l609:
+   573                           
+   574                           ;main.c: 66:         debounced_state = 0;
+   575      17B  0075               	clrf	debouncePin@debounced_state
+   576      17C                     l611:
+   577                           
+   578                           ;main.c: 68:     return debounced_state;
+   579      17C  0215               	movf	debouncePin@debounced_state,w
+   580      17D  0029               	movwf	?_debouncePin
+   581      17E                     l33:
+   582      17E  0800               	retlw	0
+   583      17F                     __end_of_debouncePin:
+   584      000                     ___latbits      equ	0
+   585      01C                     btemp           set	28	;btemp
+   586      01C                     wtemp0          set	28
+   587      01E                     wtemp1          set	30
+   588      01C                     ttemp0          set	28
+   589      01C                     ltemp0          set	28
+   590                           
+   591                           	psect	config
+   592                           
+   593                           ;Config register CONFIG @ 0xFFF
+   594                           ;	Internal Oscillator Frequency Select bit
+   595                           ;	IOSCFS = 4MHZ, 4 MHz
+   596                           ;	Master Clear Pull-up Enable bit
+   597                           ;	MCPU = OFF, Pull-up disabled
+   598                           ;	Watchdog Timer Enable bit
+   599                           ;	WDTE = OFF, WDT disabled
+   600                           ;	Code protection bit
+   601                           ;	CP = OFF, Code protection off
+   602                           ;	GP3/MCLR Pin Function Select bit
+   603                           ;	MCLRE = OFF, GP3/MCLR pin function is digital I/O, MCLR internally tied to VDD
+   604      FFF                     	org	4095
+   605      FFF  0FEA               	dw	4074
+
+Data Sizes:
+    Strings     0
+    Constant    0
+    Data        0
+    BSS         2
+    Persistent  0
+    Stack       0
+
+Auto Spaces:
+    Space          Size  Autos    Used
+    COMMON            0      0       0
+    BANK0            21     11      13
+
+Pointer List with Targets:
+
+    None.
+
+Critical Paths under _main in COMMON
+
+    None.
+
+Critical Paths under _main in BANK0
+
+    _main->_debouncePin
+
+Call Graph Tables:
+
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (0) _main                                                 8     8      0     260
+                                              3 BANK0      8     8      0
+                        _debouncePin
+                               _init
+ ---------------------------------------------------------------------------------
+ (1) _init                                                 0     0      0       0
+ ---------------------------------------------------------------------------------
+ (1) _debouncePin                                          3     2      1      29
+                                              0 BANK0      3     2      1
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 1
+ ---------------------------------------------------------------------------------
+
+ Call Graph Graphs:
+
+ _main (ROOT)
+   _debouncePin
+   _init
+
+Address spaces:
+Name               Size   Autos  Total    Usage
+BITCOMMON            0      0       0      0.0%
+BITBANK0            21      0       0      0.0%
+COMMON               0      0       0      0.0%
+BANK0               21     11      13     61.9%
+STACK                0      0       0      0.0%
+DATA                 0      0      13      0.0%
+
+
+Microchip Technology PIC Macro Assembler V3.00 build 20241204225717 
+Symbol Table                                                                                   Mon May 19 09:59:32 2025
+
+                        l23 0165                          l33 017E                          fsr 0004  
+                       l601 0167                         l611 017C                         l603 016E  
+                       l605 0173                         l621 018A                         l607 0176  
+                       l623 018F                         l631 019D                         l615 017F  
+                       l609 017B                         l641 01BB                         l633 01A2  
+                       l625 0194                         l617 0183                         l643 01C1  
+                       l635 01AB                         l627 0199                         l619 0184  
+                       l653 01D8                         l645 01C2                         l637 01B4  
+                       l661 01EF                         l629 019B                         l663 01F1  
+                       l655 01DE                         l647 01D0                         l639 01BA  
+                       l593 015D                         l665 01F2                         l657 01DF  
+                       l649 01D6                         l595 0160                         l667 01F3  
+                       l659 01EC                         l597 0162                         l669 01F4  
+                       l599 0164                         _GP0 0030                         _GP1 0031  
+                       _GP2 0032                         _GP3 0033                         u120 0173  
+                       u200 01C1                         u121 0172                         u201 01C0  
+                       u130 017B                         u210 01D6                         u131 017A  
+                       u211 01D5                         u220 01DE                         u140 018F  
+                       u221 01DD                         u141 018E                         u150 0194  
+                       u151 0193                         u160 0199                         u161 0198  
+                       u170 01A2                         u171 01A1                         u180 01B4  
+                       u237 01C8                         u181 01B3                         u190 01B9  
+                       u247 01E5                         u191 01B8                         u257 01F8  
+                      _GPIO 0006                        _main 017F                        _init 015D  
+                      btemp 001C        debouncePin@raw_state 000B                        start 0000  
+                     ?_main 0009                       ?_init 0009                       ltemp0 001C  
+                     ttemp0 001C                       status 0003                       wtemp0 001C  
+                     wtemp1 001E             __initialization 0001                __end_of_main 01FF  
+              __end_of_init 0166                      ??_main 000C                      ??_init 0000  
+                    _OPTION 0000           entry__debouncePin 0007     __end_of__initialization 0004  
+debouncePin@debounced_state 0015              __pcstackCOMMON 0000                  __pbssBANK0 0014  
+                __pmaintext 017F                     __ptext1 015D                     __ptext2 0166  
+      end_of_initialization 0004               ??_debouncePin 000A              main@prev_state 000F  
+       __end_of_debouncePin 017F         start_initialization 0001                  entry__init 0006  
+debouncePin@candidate_state 0014                   ___latbits 0000               __pcstackBANK0 0009  
+               _debouncePin 0166                   __pjmp_tab 0006                    _TRISGPIO 0006  
+                _ADCON0bits 0007                   main@cycle 0010                   main@state 0012  
+      main@rising_edges_cnt 0013                ?_debouncePin 0009                  _OSCCALbits 0005  

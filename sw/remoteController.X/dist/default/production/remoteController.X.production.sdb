@@ -1,0 +1,95 @@
+[p GLOBOPT AUTOSTATIC IEEE_DBL IEEE_FLT PIC12 PICREGULAR PIC12COM ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 10F222 ]
+[d frameptr 0 ]
+"10 C:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\sprcadd.c
+[v ___fladd __fladd `(d  1 e 4 0 ]
+"4 C:\Program Files\Microchip\xc8\v3.00\pic\sources\c99\common\Umul8_16.c
+[v __Umul8_16 _Umul8_16 `(ui  1 e 2 0 ]
+"35 G:\My Drive\BA_tech\VespaRemoteControl\sw\remoteController.X\main.c
+[v _init init `(v  1 e 1 0 ]
+"51
+[v _debouncePin debouncePin `(uc  1 e 1 0 ]
+"72
+[v _main main `(v  1 e 1 0 ]
+[s S61 . 1 `uc 1 FOSC4 1 0 :1:0 
+`uc 1 CAL 1 0 :7:1 
+]
+"219 C:/Program Files/Microchip/MPLABX/v6.20/packs/Microchip/PIC10-12Fxxx_DFP/1.7.178/xc8\pic\include\proc/pic10f222.h
+[s S64 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 CAL0 1 0 :1:1 
+`uc 1 CAL1 1 0 :1:2 
+`uc 1 CAL2 1 0 :1:3 
+`uc 1 CAL3 1 0 :1:4 
+`uc 1 CAL4 1 0 :1:5 
+`uc 1 CAL5 1 0 :1:6 
+`uc 1 CAL6 1 0 :1:7 
+]
+[u S73 . 1 `S61 1 . 1 0 `S64 1 . 1 0 ]
+[v _OSCCALbits OSCCALbits `VES73  1 e 1 @5 ]
+"269
+[v _GPIO GPIO `VEuc  1 e 1 @6 ]
+[s S22 . 1 `uc 1 ADON 1 0 :1:0 
+`uc 1 GO_nDONE 1 0 :1:1 
+`uc 1 CHS 1 0 :2:2 
+`uc 1 . 1 0 :2:4 
+`uc 1 ANS 1 0 :2:6 
+]
+"334
+[s S28 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 GO 1 0 :1:1 
+`uc 1 CHS0 1 0 :1:2 
+`uc 1 CHS1 1 0 :1:3 
+`uc 1 . 1 0 :2:4 
+`uc 1 ANS0 1 0 :1:6 
+`uc 1 ANS1 1 0 :1:7 
+]
+[s S36 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 nDONE 1 0 :1:1 
+]
+[u S39 . 1 `S22 1 . 1 0 `S28 1 . 1 0 `S36 1 . 1 0 ]
+[v _ADCON0bits ADCON0bits `VES39  1 e 1 @7 ]
+"459
+[v _OPTION OPTION `VEWuc  1 e 1 @0 ]
+"467
+[v _TRISGPIO TRISGPIO `VEWuc  1 e 1 @6 ]
+"569
+[v _GP0 GP0 `VEb  1 e 0 @48 ]
+"572
+[v _GP1 GP1 `VEb  1 e 0 @49 ]
+"575
+[v _GP2 GP2 `VEb  1 e 0 @50 ]
+"578
+[v _GP3 GP3 `VEb  1 e 0 @51 ]
+"72 G:\My Drive\BA_tech\VespaRemoteControl\sw\remoteController.X\main.c
+[v _main main `(v  1 e 1 0 ]
+{
+"74
+[v main@cycle cycle `ui  1 a 2 7 ]
+"73
+[v main@rising_edges_cnt rising_edges_cnt `uc  1 a 1 10 ]
+"76
+[v main@state state `uc  1 a 1 9 ]
+"75
+[v main@prev_state prev_state `uc  1 a 1 6 ]
+"128
+} 0
+"35
+[v _init init `(v  1 e 1 0 ]
+{
+"49
+} 0
+"51
+[v _debouncePin debouncePin `(uc  1 e 1 0 ]
+{
+[v debouncePin@raw_state raw_state `uc  1 p 1 wreg ]
+[v debouncePin@raw_state raw_state `uc  1 p 1 wreg ]
+"54
+[v debouncePin@debounced_state debounced_state `uc  1 s 1 debounced_state ]
+"55
+[v debouncePin@candidate_state candidate_state `uc  1 s 1 candidate_state ]
+"60
+[v debouncePin@raw_state raw_state `uc  1 p 1 2 ]
+"69
+} 0

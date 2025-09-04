@@ -1,0 +1,5 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "TI-TPS7A24")(type "KiCad")(uri "C:/Users/Adriano/Il mio Drive/BA_tech/VespaRemoteControl/KiCAD/Libs/TPS7A24.kicad_sym")(options "")(descr "")(hidden))
+  (lib (name "TPS7B84")(type "KiCad")(uri "C:/Users/Adriano/Il mio Drive/BA_tech/VespaRemoteControl/KiCAD/Libs/TPS7B84-Q1.kicad_sym")(options "")(descr ""))
+)

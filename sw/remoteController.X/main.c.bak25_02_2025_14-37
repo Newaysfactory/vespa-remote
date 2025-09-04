@@ -1,0 +1,134 @@
+/*
+ * File:   main.c
+ * Author: Adriano Arcadipane
+ *
+ * Created on December 25, 2024, 6:51 PM
+ */
+
+#include <xc.h>
+
+// PIC10F222 Configuration Bit Settings
+
+// CONFIG
+#pragma config IOSCFS = 4MHZ    // Internal Oscillator Frequency Select bit (4 MHz)
+#pragma config MCPU = OFF       // Master Clear Pull-up Enable bit (Pull-up disabled)
+#pragma config WDTE = OFF       // Watchdog Timer Enable bit (WDT disabled)
+#pragma config CP = OFF         // Code protection bit (Code protection off)
+#pragma config MCLRE = OFF      // GP3/MCLR Pin Function Select bit (GP3/MCLR pin function is digital I/O, MCLR internally tied to VDD)
+
+#define _XTAL_FREQ 4000000      // Internal frequency 4 MHz (for delay function)
+
+#define OBSERVATION_TIME_MS 500
+#define CYCLE_TIME_MS 2    
+#define REMOTE_TIME_ON_MS 500
+
+#define TRUE  1
+#define FALSE 0
+
+// I/O definitions
+#define BRAKE_LIGHT GP3       // Pulsante collegato a GP1
+#define OUT1 GP0              // LED collegato a GP0
+#define OUT2 GP1              // LED collegato a GP0
+#define OUT3 GP2              // LED collegato a GP0
+
+void init(){
+    //REQUIREMENTS TO MAKE PINS AVAILABLE IN DIGITAL MODE
+    ADCON0bits.ANS0 = 0;  //Disable analog input 
+    ADCON0bits.ANS1 = 0;  //Disable analog input 
+    OSCCALbits.FOSC4 = 0; //Disable TMR input from GP2
+    
+    //0 GPWU: Enable Wake-up On Pin Change bit (GP0, GP1, GP3)
+    //1 GPPU: Disable Weak Pull-ups bit (GP0, GP1, GP3)
+    //0 T0CS: Timer0 Clock Source Select bit - Transition on internal instruction cycle clock, FOSC/4
+    OPTION = 0b01011111;
+
+    // Configura GP0, GP1, GP2 come uscite digitale, GP3 come ingresso
+    TRISGPIO = 0b11111000;    // (0 = output, 1 = input)
+    GPIO = 0b00000000;        // Inizializza i pin a livello basso (0)
+}
+
+unsigned char debouncePin(unsigned char raw_state){
+    // Change the state when the raw state has the same value 8 consecutive
+    //times
+    static unsigned char debounced_state = FALSE;
+    static unsigned char candidate_state = 0;
+
+    candidate_state = candidate_state << 1 | raw_state;
+    if  (candidate_state == 0xff){
+        debounced_state = TRUE;
+    }
+    else  if (candidate_state == 0x00){
+        debounced_state = FALSE;
+    }
+    return  debounced_state;
+}
+
+
+void main(void) {
+    unsigned char rising_edges_cnt = 0;
+    unsigned char iii = 0;
+    unsigned int cycle = 0;
+    unsigned char debounce_counter = 0;    // Contatore per debounce
+    unsigned char prev_state = FALSE;
+    unsigned char state = FALSE;
+    
+    init();
+
+
+    if((STATUSbits.GPWUF == 1) && (STATUSbits.nTO == 1) && (STATUSbits.nPD == 0)){
+    // Execute this if the reset is due to a wake up signal (change on GP3 pin).
+    // Condition taken from the datasheet
+
+        while (cycle < OBSERVATION_TIME_MS/CYCLE_TIME_MS){
+            //DEBUG, REMOVE!
+            OUT3 = BRAKE_LIGHT;
+                    
+            //Do this for a predefined number of cycles            
+            state = debouncePin(BRAKE_LIGHT); //Read and debounce input
+            
+            // Count times the button is pressed looking at the rising edges
+            if (prev_state == 0 && state == 1) {
+                rising_edges_cnt++;
+                cycle = 0; //Reset the counter
+            }
+
+            cycle++;
+            prev_state = state;
+            __delay_ms(CYCLE_TIME_MS);
+        }
+
+        if (rising_edges_cnt == 1){
+            ; //Do nothing. We don't want to trigger the output when braking normally
+        } else if (rising_edges_cnt == 2){
+            OUT1 = 1;
+        } else if (rising_edges_cnt == 3){
+            OUT2 = 1;
+        } else if (rising_edges_cnt == 4){
+            //OUT3 = 1;   ENABLE AFTER DEBUG THE RESET PROBLEM!
+        }else {
+            ; //Do nothing
+        }
+
+        __delay_ms(REMOTE_TIME_ON_MS); //Keep outputs high for some time
+    }
+    else if ((STATUSbits.GPWUF == 0) && (STATUSbits.nTO == 1) && (STATUSbits.nPD == 1)){
+        // DEBUG CODE. Enter here at first power up 
+        OUT3 = 1;
+        __delay_ms(50);
+    }
+    else if ((STATUSbits.GPWUF == 0) && (STATUSbits.nTO == 0) && (STATUSbits.nPD == 1)){
+        // DEBUG CODE. Enter here at watchdog reset
+        OUT3 = 1;
+        __delay_ms(50);
+        OUT3 = 0;
+        __delay_ms(50);
+        OUT3 = 1;
+    }
+
+    //Set all outputs low before going to sleep
+    OUT1 = 0;
+    OUT2 = 0;
+    OUT3 = 0;
+    SLEEP();  //Sleep until waked up by a change on GP3
+}
+
