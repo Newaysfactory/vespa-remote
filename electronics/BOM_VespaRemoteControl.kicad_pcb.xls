@@ -1,0 +1,19 @@
+﻿Designator,Quantity,Value,Footprint,Package,MPN,DNP,Mount_Type,Description,P/N
+C1,1,330nF,C_0805_2012Metric,,,,smt,"Unpolarized capacitor, small symbol",CL21B334KBFNNNE
+C6,1,10uF 100V,C_1210_3225Metric,,,,smt,"Unpolarized capacitor, small symbol",GRM32EC72A106KE05L
+"C7, C9",2,100nF100V,C_0805_2012Metric,,,,smt,"Unpolarized capacitor, small symbol",CL21B104KCFNNNE
+C8,1,100uF,CP_Elec_6.3x7.7,,,,smt,"Polarized capacitor, small symbol",EMZA350ARA101MF80G
+"D1, D4, D6",3,1n4007,D_SOD-123FL,,,,smt,Diode,1N4007
+"D2, D5",2,SMAJ30CA,D_SMA,,,,smt,"400W bidirectional Transient Voltage Suppressor, 30.0Vr, SMA(DO-214AC)",SMAJ30CA
+D3,1,4.7V,D_MiniMELF,,,,smt,"4.7V, 500mW, 5%, Zener diode, MiniMELF",BZV55C4V7
+"D7, D8, D9",3,LED red,LED_0805_2012Metric,,,,smt,Light emitting diode,NCD0805R1
+J2,1,Conn_01x05,PinHeader_1x05_P2.54mm_Vertical,,,,tht,"Generic connector, single row, 01x05, script generated (kicad-library-utils/schlib/autogen/connector/)",PinHeader_1x05_P2.54mm_Vertical
+J3,1,Conn_PIC_ICSP_ICD,PinHeader_1x06_P2.54mm_Vertical,,,,tht,Microchip PIC In-Circuit Serial Programming/Debugging (ICSP/ICD) connector,PinHeader_1x06_P2.54mm_Vertical
+"Q1, Q2, Q3",3,BC817,SOT-23,,,,smt,"0.8A Ic, 45V Vce, NPN Transistor, SOT-23",BC817
+"R1, R11, R5, R8",4,"1,5k",R_0805_2012Metric,,,,smt,Resistor,0805W8F1501T5E
+"R10, R3, R4, R7",4,10k,R_0805_2012Metric,,,,smt,Resistor,0805W8F1002T5E
+"R12, R6, R9",3,100k,R_0805_2012Metric,,,,smt,Resistor,0805W8F1003T5E
+R2,1,47k,R_0805_2012Metric,,,,smt,Resistor,0805W8F4702T5E
+"TP1, TP3, TP4, TP5, TP6, TP7, TP8, TP9",8,TestPoint,My-TestPoint_Pad_D1.0mm,,,,tht,test point,
+U2,1,PIC10F222,SOT-23-6,,,,smt,"512W Flash, 24B SRAM, SOT-23-6", PIC10F222T-E/OT
+U3,1,TLV1117-50,SOT-223-3_TabPin2,,,,smt,"800mA Low-Dropout Linear Regulator, 5.0V fixed output, TO-220/TO-252/TO-263/SOT-223",TLV1117-50IDCY
